@@ -13,4 +13,18 @@ public class Person
     {
         return Turns <= 0 ? $"({Name}:Forever)" : $"({Name}:{Turns})";
     }
+
+     public override bool Equals(object obj)
+    {
+        if (obj is Person other)
+        {
+            return Name == other.Name && Turns == other.Turns;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name, Turns);
+    }
 }

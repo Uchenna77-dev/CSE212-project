@@ -20,7 +20,7 @@ public class TakingTurnsQueue
     /// <param name="turns">Number of turns remaining</param>
     public void AddPerson(string name, int turns)
     {
-        var person = new Person(name, turns);
+         var person = new Person(name, turns);
         _people.Enqueue(person);
     }
 
@@ -32,7 +32,7 @@ public class TakingTurnsQueue
     /// if the queue is empty.
     /// </summary>
     public Person GetNextPerson()
-    {
+      {
         if (_people.IsEmpty())
         {
             throw new InvalidOperationException("No one in the queue.");
@@ -40,11 +40,22 @@ public class TakingTurnsQueue
         else
         {
             Person person = _people.Dequeue();
+
             if (person.Turns > 1)
             {
-                person.Turns -= 1;
+                person.Turns --;
                 _people.Enqueue(person);
             }
+
+             else if (person.Turns == 1)
+        {
+            // Use once, then remove (don't requeue)
+        }
+        else
+        {
+            // Turns == 0 or negative → forever → requeue unchanged
+            _people.Enqueue(person);
+        }
 
             return person;
         }
