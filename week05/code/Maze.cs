@@ -76,4 +76,42 @@ public class Maze
         // Otherwise, we are good
         return true;
     }
+
+
+    public static void SolveMaze(List<string> results, Maze maze, int x = 0, int y = 0, List<(int, int)>? currPath = null)
+{
+    // Initialize current path if first call
+    if (currPath == null)
+        currPath = new List<(int, int)>();
+
+    // Add current position to the path
+    currPath.Add((x, y));
+
+    // If current position is the end, record the path and backtrack
+    if (maze.IsEnd(x, y))
+    {
+        results.Add(currPath.AsString());
+        currPath.RemoveAt(currPath.Count - 1);
+        return;
+    }
+
+    // Define all 4 possible directions
+    int[] dx = { 0, 0, 1, -1 }; // right, left, down, up
+    int[] dy = { 1, -1, 0, 0 };
+
+    for (int i = 0; i < 4; i++)
+    {
+        int newX = x + dx[i];
+        int newY = y + dy[i];
+
+        if (maze.IsValidMove(currPath, newX, newY))
+        {
+            SolveMaze(results, maze, newX, newY, currPath);
+        }
+    }
+
+    // Backtrack
+    currPath.RemoveAt(currPath.Count - 1);
+}
+
 }
